@@ -7,13 +7,16 @@ def call(Map args) {
         error "❌ Environment variable for ${args.version} is not set."
     }
 
+    echo "ℹ️ Using Cocos Creator path: ${creatorPath}"
+    echo "ℹ️ Project path: ${args.projectPath}"
+
     def buildPath = "${args.projectPath}/build"
     echo "🧹 Cleaning old build at: ${buildPath}"
 
     sh """
         if [ -d '${buildPath}' ]; then
             echo "🗑️ Deleting old build..."
-            rm -rf '${buildPath}'
+            rm -rf '${buildPath}' || echo "⚠️ Failed to delete old build folder."
         else
             echo "✅ No existing build folder to clean."
         fi
@@ -21,17 +24,25 @@ def call(Map args) {
 
     echo "🚀 Building with Cocos Creator (${args.version}): ${creatorPath}"
 
-    if (args.version == 'cocos2') {
-        sh """
-            '${creatorPath}' --path '${args.projectPath}' --build "platform=ios;debug=false"
-        """
-        echo '✅ Cocos 2 project built via CLI.'
-    } else if (args.version == 'cocos3') {
-        sh """
-            '${creatorPath}' --project '${args.projectPath}' --build "platform=ios;debug=false;outputName:ios"
-        """
-        echo '✅ Cocos 3 project built via CLI (using --project).'
-    } else {
-        error "❌ Unsupported Cocos version: ${args.version}"
+    try {
+        if (args.version == 'cocos2') {
+            sh """
+                set -e
+                '${creatorPath}' --path '${args.projectPath}' --build "platform=ios;debug=false" 2>&1 | tee build.log
+            """
+            echo '✅ Cocos 2 project built via CLI.'
+        } else if (args.version == 'cocos3') {
+            sh """
+                set -e
+                '${creatorPath}' --project '${args.projectPath}' --build "platform=ios;debug=false;outputName:ios" 2>&1 | tee build.log
+            """
+            echo '✅ Cocos 3 project built via CLI (using --project).'
+        } else {
+            error "❌ Unsupported Cocos version: ${args.version}"
+        }
+    } catch (Exception e) {
+        echo "⚠️ Build failed. Debug logs:"
+        sh "cat build.log"
+        error "❌ Build failed: ${e.message}"
     }
 }
