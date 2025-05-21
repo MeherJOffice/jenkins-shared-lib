@@ -28,7 +28,7 @@ def call(Map args) {
         echo '✅ Cocos 2 project built via CLI.'
     } else if (args.version == 'cocos3') {
         sh """
-            '${creatorPath}' --project '${args.projectPath}' --build "platform=ios;debug=false"
+            '${creatorPath}' --project '${args.projectPath}' --build "platform=ios;debug=false;outputName:ios"
         """
         echo '✅ Cocos 3 project built via CLI (using --project).'
     } else {
