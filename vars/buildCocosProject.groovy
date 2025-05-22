@@ -32,7 +32,9 @@ def call(Map args) {
             """
             echo '✅ Cocos 2 project built via CLI.'
         } else if (args.version == 'cocos3') {
-            def configPath = "${env.WORKSPACE}/JenkinsFiles/buildConfig_ios.json"
+
+            def configPath = "${args.projectPath}/buildConfig_ios.json"
+
             sh """
                 set -e
                 '${creatorPath}' --project '${args.projectPath}' --build "platform=ios;debug=false;configPath=${configPath}" 2>&1 | tee build.log
