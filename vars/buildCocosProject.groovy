@@ -32,8 +32,18 @@ def call(Map args) {
             """
             echo '✅ Cocos 2 project built via CLI.'
         } else if (args.version == 'cocos3') {
+            def localConfigPath = "${args.projectPath}/buildConfig_ios.json"
+            def fallbackConfigPath = "${env.WORKSPACE}/JenkinsFiles/buildConfig_ios.json"
+            def configPath = ""
 
-            def configPath = "${args.projectPath}/buildConfig_ios.json"
+            def configExists = fileExists(localConfigPath)
+            if (configExists) {
+                echo "✅ Found local config file at ${localConfigPath}"
+                configPath = localConfigPath
+            } else {
+                echo "⚠️ Local config not found. Using fallback config: ${fallbackConfigPath}"
+                configPath = fallbackConfigPath
+            }
 
             sh """
                 set -e
