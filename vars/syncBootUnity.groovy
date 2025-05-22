@@ -33,6 +33,7 @@ def call(Map args) {
         """
 
     } else if (cocosVersion == 'cocos3') {
+
         def source = "${bootUnityPath}/assets/LoadScene"
         def destination = "${cocosProjectPath}/assets/LoadScene"
 
@@ -42,6 +43,17 @@ def call(Map args) {
             mkdir -p '${cocosProjectPath}/assets'
             cp -R '${source}' '${destination}'
             echo "✅ LoadScene from BootUnity373 synced for Cocos 3."
+        """
+
+        def settingssource = "${bootUnityPath}/settings/v2/packages"
+        def settingsdestination = "${cocosProjectPath}/settings/v2/packages"
+
+        sh """
+            echo "📁 Syncing settings folder for Cocos 3 from ${bootFolder}..."
+            rm -rf '${settingsdestination}'
+            mkdir -p '${cocosProjectPath}/settings'
+            cp -R '${settingssource}' '${settingsdestination}'
+            echo "✅ SettingsScene from BootUnity373 synced for Cocos 3."
         """
     } else {
         error "❌ Unsupported Cocos version: ${cocosVersion}"
