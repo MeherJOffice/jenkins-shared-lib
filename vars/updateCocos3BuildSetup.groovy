@@ -89,9 +89,12 @@ def call(Map args = [:]) {
     }
 
     def buildPath = "${targetBuildRoot}/${productName}/CocosBuild"
+    def nativeOutPath = "${buildPath}/native"
+
     def config = [
         platform   : 'ios',
         buildPath  : buildPath,
+        nativeEnginePath : nativeOutPath,
         debug      : false,
         name       : sanitizedProductName,
         outputName : 'ios',
