@@ -92,7 +92,7 @@ def call(Map args = [:]) {
 
     def config = [
         platform   : 'ios',
-        buildPath  : "project://build",
+        buildPath  : 'project://build',
         debug      : false,
         name       : sanitizedProductName,
         outputName : 'ios',
