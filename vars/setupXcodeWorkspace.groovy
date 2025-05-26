@@ -44,7 +44,7 @@ def call(Map args = [:]) {
     def cocosProjectFolderName = cocosProjectPath.tokenize('/').last()
     def cocosXcodeProj = cocosVersion == 'cocos2'
         ? "${targetBuildFolder}/CocosBuild/jsb-default/frameworks/runtime-src/proj.ios_mac/${sanitizedName}.xcodeproj"
-        : "${targetBuildFolder}/CocosBuild/${cocosProjectFolderName}/build/ios/proj/${sanitizedName}.xcodeproj"
+        : "${targetBuildFolder}/CocosBuild/build/ios/proj/${sanitizedName}.xcodeproj"
 
     if (!fileExists(unityXcodeProj)) {
         error "❌ Unity Xcode project not found at: ${unityXcodeProj}"
