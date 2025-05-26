@@ -15,12 +15,11 @@ def call(Map args = [:]) {
         returnStdout: true
     ).trim()
 
-    def sanitizedProductName = productName.replaceAll(/[^A-Za-z0-9]/, '')
     def unityIconsPath = "${env.HOME}/jenkinsBuild/${productName}/UnityBuild/Unity-iPhone/Images.xcassets/AppIcon.appiconset"
 
     def cocosIconsPath = (cocosVersion == 'cocos2')
         ? "${env.HOME}/jenkinsBuild/${productName}/CocosBuild/jsb-default/frameworks/runtime-src/proj.ios_mac/ios/Images.xcassets/AppIcon.appiconset"
-        : "${targetBuildFolder}/CocosBuild/native/engine/ios/Images.xcassets/AppIcon.appiconset"
+        : "${env.HOME}/jenkinsBuild/${productName}/CocosBuild/native/engine/ios/Images.xcassets/AppIcon.appiconset"
 
     if (!fileExists(unityIconsPath)) {
         error "❌ Unity AppIcon path not found: ${unityIconsPath}"
