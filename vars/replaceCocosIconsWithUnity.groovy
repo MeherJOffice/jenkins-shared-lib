@@ -1,7 +1,6 @@
 def call(Map args = [:]) {
     def unityProjectPath = args.unityProjectPath
     def cocosVersion = args.cocosVersion
-    def targetBuildFolder = args.get('targetBuildFolder', "$HOME/jenkinsBuild")
 
     if (!unityProjectPath || !cocosVersion) {
         error "❌ 'unityProjectPath' and 'cocosVersion' are required"
