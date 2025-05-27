@@ -9,9 +9,9 @@ def call(Map args = [:]) {
     // \\\ Stage: Run changeLibCC Script After Cocos Build
     def scriptPath = "${cocosProjectPath}/${scriptName}"
 
-    echo "🔧 Running script: ${scriptPath}"
-    sh "chmod +x '${scriptPath}'"
-    sh "'${scriptPath}'"
+    // echo "🔧 Running script: ${scriptPath}"
+    // sh "chmod +x '${scriptPath}'"
+    // sh "'${scriptPath}'"
 
     echo '✅ changeLibCC script executed successfully.'
 }
