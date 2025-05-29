@@ -47,7 +47,7 @@ def call(Map args = [:]) {
     echo "🔐 Bundle ID: ${bundleId}"
 
     def pythonFile = "${jenkinsfilesPath}/SetupCocosBuildSettings.py"
-    def copiedFile = "${unityProjectPath}/unityBuild/SetupCocosBuildSettings.py"
+    def copiedFile = "${cocosProjectPath}/SetupCocosBuildSettings.py"
 
     sh "cp '${jenkinsfilesPath}/Python/SetupCocosBuildSettings.py' '${copiedFile}'"
 
