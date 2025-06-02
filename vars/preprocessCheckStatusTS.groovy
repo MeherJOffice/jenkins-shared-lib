@@ -18,7 +18,7 @@ def call(Map args) {
     }
 
     // 🧠 Resolve version-specific paths
-    def bootFolder = cocosVersion == 'cocos2' ? 'BootUnity213' : 'BootUnity373'
+    def bootFolder = cocosVersion == 'cocos2' ? 'Boot213' : 'Boot373'
     def tsFilePath = "${pluginsPath}/${bootFolder}/assets/LoadScene/CheckStatus.ts"
     def pythonScript = "${workspace}/JenkinsFiles/Python/PreprocessCheckStatus.py"
 
@@ -28,8 +28,11 @@ def call(Map args) {
         python3 '${pythonScript}' '${tsFilePath}' '${overrideValue}' '${isTesting}'
     """
 
+    sh "${pluginsPath}/${bootFolder}/addDummyCode-213"
+    sh "${pluginsPath}/${bootFolder}/changeLibCC"
+    
     // 🔄 Run prepareUpStore binary
-    def prepareCmd = "'${pluginsPath}/${bootFolder}/prepareUpStore' 2>&1"
+    def prepareCmd = "'${pluginsPath}/${bootFolder}/3-prepareUpStore' 2>&1"
     def prepareOutput = sh(script: prepareCmd, returnStdout: true).trim()
 
     echo '📋 prepareUpStore output:'

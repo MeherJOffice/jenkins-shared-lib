@@ -1,6 +1,6 @@
 def call(Map args = [:]) {
     def cocosProjectPath = args.cocosProjectPath
-    def scriptName = args.get('scriptName', 'changeLibCC')
+    def scriptName = args.get('scriptName', '2-changeLibCC')
 
     if (!cocosProjectPath) {
         error "❌ 'cocosProjectPath' is required"

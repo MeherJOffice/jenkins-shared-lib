@@ -1,10 +1,9 @@
 def call(Map args = [:]) {
-    def unityProjectPath = args.unityProjectPath
     def cocosProjectPath = args.cocosProjectPath
     def jenkinsfilesPath = args.get('jenkinsfilesPath', "${env.WORKSPACE}/JenkinsFiles")
 
-    if (!unityProjectPath || !cocosProjectPath) {
-        error "❌ 'unityProjectPath' and 'cocosProjectPath' are required"
+    if (!cocosProjectPath) {
+        error "❌ 'cocosProjectPath' is required"
     }
 
     echo '🔎 Searching for Python virtual environment...'
@@ -20,43 +19,20 @@ def call(Map args = [:]) {
 
     echo "✅ Found VENV at: ${venvPath}"
 
-    def productName = sh(
-        script: "grep 'productName:' '${unityProjectPath}/ProjectSettings/ProjectSettings.asset' | sed 's/^[^:]*: *//'",
-        returnStdout: true
-    ).trim()
+    def pythonFile = "${jenkinsfilesPath}/Python/ConfigureBuilderSettings.py"
+    def copiedFile = "${cocosProjectPath}/ConfigureBuilderSettings.py"
 
-    def bundleId = sh(
-        script: """
-            awk '/applicationIdentifier:/,/^[^ ]/' '${unityProjectPath}/ProjectSettings/ProjectSettings.asset' | \
-            grep 'iPhone:' | sed 's/^.*iPhone: *//' | head -n 1 | tr -d '\\n\\r'
-        """,
-        returnStdout: true
-    ).trim()
+    // 📝 Copy script into project
+    sh "cp '${pythonFile}' '${copiedFile}'"
 
-    if (!bundleId) {
-        bundleId = sh(
-            script: """
-                grep 'bundleIdentifier:' '${unityProjectPath}/ProjectSettings/ProjectSettings.asset' | \
-                sed 's/^[^:]*: *//' | head -n 1 | tr -d '\\n\\r'
-            """,
-            returnStdout: true
-        ).trim()
-    }
-
-    echo "📦 Product Name: ${productName}"
-    echo "🔐 Bundle ID: ${bundleId}"
-
-    def pythonFile = "${jenkinsfilesPath}/SetupCocosBuildSettings.py"
-    def copiedFile = "${cocosProjectPath}/SetupCocosBuildSettings.py"
-
-    sh "cp '${jenkinsfilesPath}/Python/SetupCocosBuildSettings.py' '${copiedFile}'"
-
+    // 🧠 Run script
     sh """
         source '${venvPath}/bin/activate' && \
-        python3 '${copiedFile}' '${cocosProjectPath}' '${bundleId}' '${productName}'
+        python3 '${copiedFile}' '${cocosProjectPath}'
     """
 
+    // 🧹 Clean up
     sh "rm -f '${copiedFile}'"
-    echo '🧹 Cleanup: Deleted SetupCocosBuildSettings.py'
-    echo '✅ Cocos 2 build settings updated successfully.'
+    echo '🧹 Cleanup: Deleted ConfigureBuilderSettings.py'
+    echo '✅ Cocos 2 builder settings updated successfully.'
 }
