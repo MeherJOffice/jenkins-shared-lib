@@ -9,7 +9,7 @@ def call(Map args) {
 
     echo "🔄 Syncing ${bootFolder} into Cocos ${cocosVersion} project..."
 
-    def foldersToCopy = ['build-templates', 'settings']
+    def foldersToCopy = ['build-templates']
     def foldersToCopyInsideAssets = ['LoadScene', 'Ext']
     def filesToCopy = ['2-changeLibCC']
     def commands = []
