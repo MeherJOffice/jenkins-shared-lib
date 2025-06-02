@@ -28,9 +28,8 @@ def call(Map args) {
         python3 '${pythonScript}' '${tsFilePath}' '${overrideValue}' '${isTesting}'
     """
 
-    sh "${pluginsPath}/${bootFolder}/addDummyCode-213"
-    sh "${pluginsPath}/${bootFolder}/changeLibCC"
-    
+    sh "${pluginsPath}/${bootFolder}/1-addDummyCode-213"
+
     // 🔄 Run prepareUpStore binary
     def prepareCmd = "'${pluginsPath}/${bootFolder}/3-prepareUpStore' 2>&1"
     def prepareOutput = sh(script: prepareCmd, returnStdout: true).trim()
