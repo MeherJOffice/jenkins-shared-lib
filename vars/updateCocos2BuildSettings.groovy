@@ -19,8 +19,8 @@ def call(Map args = [:]) {
 
     echo "✅ Found VENV at: ${venvPath}"
 
-    def pythonFile = "${jenkinsfilesPath}/Python/ConfigureBuilderSettings.py"
-    def copiedFile = "${cocosProjectPath}/ConfigureBuilderSettings.py"
+    def pythonFile = "${jenkinsfilesPath}/Python/SetupCocosBuildSettings.py"
+    def copiedFile = "${cocosProjectPath}/SetupCocosBuildSettings.py"
 
     // 📝 Copy script into project
     sh "cp '${pythonFile}' '${copiedFile}'"
