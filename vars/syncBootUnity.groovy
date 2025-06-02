@@ -11,7 +11,7 @@ def call(Map args) {
 
     def foldersToCopy = ['build-templates', 'settings']
     def foldersToCopyInsideAssets = ['LoadScene', 'Ext']
-    def filesToCopy = ['changeLibCC']
+    def filesToCopy = ['2-changeLibCC']
     def commands = []
 
     foldersToCopy.each { folder ->
