@@ -1,24 +1,26 @@
 def call(Map args = [:]) {
-    def unityProjectPath = args.unityProjectPath
+    def cocosProjectPath = args.cocosProjectPath
 
-    if (!unityProjectPath) {
-        error "❌ 'unityProjectPath' is required"
+    if (!cocosProjectPath) {
+        error "❌ 'cocosProjectPath' is required"
     }
 
-    // \\\\\\ Stage: 📂 Open Game Build Folder
+    // 🏠 Get user home
     def userHome = sh(
         script: "echo $HOME",
         returnStdout: true
     ).trim()
 
-    def productName = sh(
-        script: "grep 'productName:' '${unityProjectPath}/ProjectSettings/ProjectSettings.asset' | sed 's/^[^:]*: *//'",
-        returnStdout: true
-    ).trim()
+    // 📄 Read product name from Cocos builder.json
+    def builderJson = readJSON file: "${cocosProjectPath}/settings/builder.json"
+    def productName = builderJson.title
+
+    if (!productName) {
+        error "❌ Could not extract product name from builder.json"
+    }
 
     def buildRootPath = "${userHome}/jenkinsBuild/${productName}"
 
     echo "📂 Opening game build folder: ${buildRootPath}"
-
     sh "open \"${buildRootPath}\""
 }
