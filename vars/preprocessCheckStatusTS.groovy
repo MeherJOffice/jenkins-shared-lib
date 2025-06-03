@@ -18,15 +18,17 @@ def call(Map args) {
     }
 
     // 🧠 Resolve version-specific paths
-    def bootFolder = cocosVersion == 'cocos2' ? 'Boot213' : 'Boot373'
+    def bootFolder = 'Boot213'
     def tsFilePath = "${pluginsPath}/${bootFolder}/assets/LoadScene/CheckStatus.ts"
     def pythonScript = "${workspace}/JenkinsFiles/Python/PreprocessCheckStatus.py"
 
     // 🛠️ Run Python preprocessor
     sh """
         source '${venvPath}/bin/activate' && \
-        python3 '${pythonScript}' '${tsFilePath}' '${overrideValue}' '${isTesting}'
+        python3 '${pythonScript}' '${tsFilePath}' '${overrideValue}'
     """
+
+    sh "${pluginsPath}/changeScriptUnity"
 
     sh "${pluginsPath}/${bootFolder}/1-addDummyCode-213"
 
@@ -46,6 +48,14 @@ def call(Map args) {
             return
         }
     }
+    def updatedCheckstatutFilePath = "${pluginsPath}/${bootFolder}/assets/LoadScene/${newFileName}"
+    def updateDatepythonScript = "${workspace}/JenkinsFiles/Python/UpdateBDate.py"
+
+    // 🛠️ Run Python date preprocessor
+    sh """
+        source '${venvPath}/bin/activate' && \
+        python3 '${updateDatepythonScript}' '${updatedCheckstatutFilePath}' '${isTesting}'
+    """
 
     if (!newFileName) {
         echo '❗ Could not match CheckStatus.ts rename. Full output:'
