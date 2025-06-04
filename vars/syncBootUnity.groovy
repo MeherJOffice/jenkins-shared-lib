@@ -8,7 +8,7 @@ def call(Map args) {
 
         echo "🔄 Syncing ${bootFolder} into Cocos ${cocosVersion} project..."
 
-        def foldersToCopy = ['node_modules']
+        def foldersToCopy = ['node_modules' , 'build-templates']
         def foldersToCopyInsideAssets = ['LoadScene', 'Ext']
         def filesToCopy = ['2-changeLibCC']
         def commands = []
@@ -30,14 +30,6 @@ def call(Map args) {
                 commands << "rm -rf '${cocosProjectPath}/assets/${folder}'"
                 commands << "cp -R '${bootPath}/assets/${folder}' '${cocosProjectPath}/assets/'"
         }
-
-        // 🔄 Copy specific .cpp/.h/.mm files from Boot213 templates to Cocos project
-        def filePairs = [
-        'build-templates/jsb-default/frameworks/runtime-src/Classes/AppDelegate.cpp',
-        'build-templates/jsb-default/frameworks/runtime-src/proj.ios_mac/ios/AppController.h',
-        'build-templates/jsb-default/frameworks/runtime-src/proj.ios_mac/ios/AppController.mm'
-        ]
-
         filePairs.each { relativePath ->
                 def src = "${bootPath}/${relativePath}"
                 def dst = "${cocosProjectPath}/${relativePath}"
