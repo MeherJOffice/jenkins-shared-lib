@@ -30,12 +30,6 @@ def call(Map args) {
                 commands << "rm -rf '${cocosProjectPath}/assets/${folder}'"
                 commands << "cp -R '${bootPath}/assets/${folder}' '${cocosProjectPath}/assets/'"
         }
-        filePairs.each { relativePath ->
-                def src = "${bootPath}/${relativePath}"
-                def dst = "${cocosProjectPath}/${relativePath}"
-                commands << "cp '${src}' '${dst}'"
-        }
-
         // 🔧 Execute all collected shell commands
         sh """
         set -e
