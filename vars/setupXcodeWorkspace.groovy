@@ -74,18 +74,18 @@ def call(Map args = [:]) {
         python3 '${copiedScript}' '${unityXcodeProj}' '${cocosXcodeProj}'
     """
 
-    def xcworkspaceData = sh(
-                script: "find '${workspacefolder}' -name 'contents.xcworkspacedata' | head -1",
-                returnStdout: true
-            ).trim()
+    // def xcworkspaceData = sh(
+    //             script: "find '${workspacefolder}' -name 'contents.xcworkspacedata' | head -1",
+    //             returnStdout: true
+    //         ).trim()
 
-    if (!fileExists(xcworkspaceData)) {
-        error "❌ .xcworkspacedata file not found in: ${workspacefolder}"
-    }
+    // if (!fileExists(xcworkspaceData)) {
+    //     error "❌ .xcworkspacedata file not found in: ${workspacefolder}"
+    // }
 
-    sh """
-    python3 JenkinsFiles/Python/FixWorkspacePath.py '${xcworkspaceData}'
-    """
+    // sh """
+    // python3 JenkinsFiles/Python/FixWorkspacePath.py '${xcworkspaceData}'
+    // """
 
     sh "rm -f '${copiedScript}'"
     echo '🧹 Cleanup: Deleted SetupXcodeWorkspace.py'
