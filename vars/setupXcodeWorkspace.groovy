@@ -83,17 +83,9 @@ def call(Map args = [:]) {
         error "❌ .xcworkspacedata file not found in: ${workspacefolder}"
     }
 
-    // Only update Unity path to relative
     sh """
-                sed -i.bak 's|location = \"absolute:.*/\\(UnityBuild/[^\\"]*\\)\"|location = \"container:../UnityBuild/\\1\"|g' "${xcworkspaceData}"
-            """
-
-    // Optionally update Cocos path to relative only if cocosXcodeProj is not empty
-    if (cocosXcodeProj?.trim()) {
-        sh """
-                    sed -i.bak 's|location = \"absolute:.*/\\(CocosBuild/[^\\"]*\\)\"|location = \"container:../CocosBuild/\\1\"|g' "${xcworkspaceData}"
-                """
-    }
+    python3 JenkinsFiles/Python/FixWorkspacePath.py '${xcworkspaceData}'
+    """
 
     sh "rm -f '${copiedScript}'"
     echo '🧹 Cleanup: Deleted SetupXcodeWorkspace.py'
