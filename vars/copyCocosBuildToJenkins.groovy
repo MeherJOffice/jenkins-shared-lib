@@ -6,11 +6,7 @@ def call(Map args = [:]) {
     if (!unityProjectPath || !cocosProjectPath || !cocosVersion) {
         error "❌ 'unityProjectPath', 'cocosProjectPath', and 'cocosVersion' are required"
     }
-    // 💡 Skip condition
-    if (params.ENVIRONMENT == 'Production' && args.cocosVersion == 'cocos3') {
-        echo '⏭️ Skipping copying for cocos3 in Production mode.'
-        return
-    }
+
     def productName = sh(
         script: "grep 'productName:' '${unityProjectPath}/ProjectSettings/ProjectSettings.asset' | sed 's/^[^:]*: *//'",
         returnStdout: true
