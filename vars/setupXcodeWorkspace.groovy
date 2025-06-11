@@ -24,8 +24,6 @@ def call(Map args = [:]) {
     def sourcePyScript = "${pythonfiles}/SetupXcodeWorkspace.py"
     def targetFolder = "${unityProjectPath}/unityBuild"
     def copiedScript = "${targetFolder}/SetupXcodeWorkspace.py"
-
-    def setupTargetFolder = "${unityProjectPath}"
     def setupfile = "${env.WORKSPACE}/JenkinsFiles/Golang/setupCocos3"
 
     echo "📁 Copying SetupXcodeWorkspace.py to: ${targetFolder}"
@@ -57,7 +55,7 @@ def call(Map args = [:]) {
         cocosXcodeProj = ''
         // copy setup file
         sh """
-        mkdir -p '${setupTargetFolder}'
+        mkdir -p '${targetBuildFolder}'
         cp '${setupfile}' '${setupTargetFolder}/'
         """
         echo "✅ setupCocos3 copied to ${setupTargetFolder}"
