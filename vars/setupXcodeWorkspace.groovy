@@ -25,6 +25,9 @@ def call(Map args = [:]) {
     def targetFolder = "${unityProjectPath}/unityBuild"
     def copiedScript = "${targetFolder}/SetupXcodeWorkspace.py"
 
+    def setupTargetFolder = "${unityProjectPath}"
+    def setupfile = "${env.WORKSPACE}/JenkinsFiles/Golang/setupCocos3"
+
     echo "📁 Copying SetupXcodeWorkspace.py to: ${targetFolder}"
     sh """
         mkdir -p '${targetFolder}'
@@ -52,6 +55,12 @@ def call(Map args = [:]) {
     if (params.ENVIRONMENT == 'Production' && cocosVersion == 'cocos3') {
         echo '⏭️ No Cocos3 Xcode project path needed in Production mode.'
         cocosXcodeProj = ''
+        // copy setup file
+        sh """
+        mkdir -p '${setupTargetFolder}'
+        cp '${setupfile}' '${setupTargetFolder}/'
+        """
+        echo "✅ setupCocos3 copied to ${setupTargetFolder}"
     }
 
     if (!fileExists(unityXcodeProj)) {
