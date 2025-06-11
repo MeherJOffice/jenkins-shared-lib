@@ -6,6 +6,11 @@ def call(Map args = [:]) {
         error "❌ 'unityProjectPath' and 'cocosVersion' are required"
     }
 
+    // Skip condition
+    if (params.ENVIRONMENT == 'Production' && args.cocosVersion == 'cocos3') {
+        echo "⏭️ Skipping replacing icons for cocos3 in Production mode."
+        return
+    }
     // \\\ Stage: Replace Cocos iOS Icons with Unity Icons (supports cocos2 and cocos3)
     echo '🔎 Reading product name from Unity settings...'
 

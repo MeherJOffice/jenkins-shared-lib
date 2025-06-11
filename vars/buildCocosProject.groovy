@@ -6,7 +6,11 @@ def call(Map args) {
     if (!creatorPath?.trim()) {
         error "❌ Environment variable for ${args.version} is not set."
     }
-
+    // Skip condition
+    if (params.ENVIRONMENT == 'Production' && args.version == 'cocos3') {
+        echo "⏭️ Skipping build for cocos3 in Production mode."
+        return
+    }
     echo "ℹ️ Using Cocos Creator path: ${creatorPath}"
     echo "ℹ️ Project path: ${args.projectPath}"
 

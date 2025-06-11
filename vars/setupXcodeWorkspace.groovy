@@ -42,15 +42,29 @@ def call(Map args = [:]) {
 
     def unityXcodeProj = "${targetBuildFolder}/UnityBuild/Unity-iPhone.xcodeproj"
     def cocosProjectFolderName = cocosProjectPath.tokenize('/').last()
+
     def cocosXcodeProj = cocosVersion == 'cocos2'
-        ? "${targetBuildFolder}/CocosBuild/jsb-default/frameworks/runtime-src/proj.ios_mac/${sanitizedName}.xcodeproj"
-        : "${targetBuildFolder}/CocosBuild/build/ios/proj/${sanitizedName}.xcodeproj"
+    ? "${targetBuildFolder}/CocosBuild/jsb-default/frameworks/runtime-src/proj.ios_mac/${sanitizedName}.xcodeproj"
+    : "${targetBuildFolder}/CocosBuild/build/ios/proj/${sanitizedName}.xcodeproj"
+
+    //  Skip/empty path for cocos3 in Production
+    if (params.ENVIRONMENT == 'Production' && cocosVersion == 'cocos3') {
+        echo '⏭️ No Cocos3 Xcode project path needed in Production mode.'
+        cocosXcodeProj = ''
+    }
 
     if (!fileExists(unityXcodeProj)) {
         error "❌ Unity Xcode project not found at: ${unityXcodeProj}"
     }
-    if (!fileExists(cocosXcodeProj)) {
-        error "❌ Cocos Xcode project not found at: ${cocosXcodeProj}"
+
+    // Only check if path is not empty
+    if (cocosXcodeProj?.trim()) {
+        if (!fileExists(cocosXcodeProj)) {
+            error "❌ Cocos Xcode project not found at: ${cocosXcodeProj}"
+        }
+    }
+    else {
+        echo '⏩ Skipping Cocos Xcode project check (none needed).'
     }
 
     echo '🚀 Running SetupXcodeWorkspace.py...'
