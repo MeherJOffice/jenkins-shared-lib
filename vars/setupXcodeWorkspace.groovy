@@ -93,7 +93,6 @@ def call(Map args = [:]) {
         sh """
                     sed -i.bak 's|location = \"absolute:.*/\\(CocosBuild/[^\\"]*\\)\"|location = \"container:../CocosBuild/\\1\"|g' "${xcworkspaceData}"
                 """
-            }
     }
 
     sh "rm -f '${copiedScript}'"
