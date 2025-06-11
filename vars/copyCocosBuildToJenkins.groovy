@@ -41,6 +41,7 @@ def call(Map args = [:]) {
             echo '✅ Cocos 3 project copied and cleaned (kept only build and native folders).'
         } 
         else {
+            targetBaseFolder = "$HOME/jenkinsBuild/${productName}/CocosProject"
             sh """
             mkdir -p '${targetBaseFolder}'
             cp -R '${sourceFullProject}/.' '${targetBaseFolder}/'
