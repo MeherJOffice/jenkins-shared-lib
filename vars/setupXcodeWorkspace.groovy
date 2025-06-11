@@ -41,6 +41,7 @@ def call(Map args = [:]) {
     def targetBuildFolder = "$HOME/jenkinsBuild/${productName}"
 
     def unityXcodeProj = "${targetBuildFolder}/UnityBuild/Unity-iPhone.xcodeproj"
+    def workspacefolder = "${targetBuildFolder}/XcodeWorkspace"
     def cocosProjectFolderName = cocosProjectPath.tokenize('/').last()
 
     def cocosXcodeProj = cocosVersion == 'cocos2'
@@ -72,6 +73,28 @@ def call(Map args = [:]) {
         source '${venvPath}/bin/activate' && \
         python3 '${copiedScript}' '${unityXcodeProj}' '${cocosXcodeProj}'
     """
+
+    def xcworkspaceData = sh(
+                script: "find '${workspacefolder}' -name 'contents.xcworkspacedata' | head -1",
+                returnStdout: true
+            ).trim()
+
+    if (!fileExists(xcworkspaceData)) {
+        error "❌ .xcworkspacedata file not found in: ${workspacefolder}"
+    }
+
+    // Only update Unity path to relative
+    sh """
+                sed -i.bak 's|location = \"absolute:.*/\\(UnityBuild/[^\\"]*\\)\"|location = \"container:../UnityBuild/\\1\"|g' "${xcworkspaceData}"
+            """
+
+    // Optionally update Cocos path to relative only if cocosXcodeProj is not empty
+    if (cocosXcodeProj?.trim()) {
+        sh """
+                    sed -i.bak 's|location = \"absolute:.*/\\(CocosBuild/[^\\"]*\\)\"|location = \"container:../CocosBuild/\\1\"|g' "${xcworkspaceData}"
+                """
+            }
+    }
 
     sh "rm -f '${copiedScript}'"
     echo '🧹 Cleanup: Deleted SetupXcodeWorkspace.py'
