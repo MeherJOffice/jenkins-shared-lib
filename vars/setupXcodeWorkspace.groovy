@@ -56,9 +56,9 @@ def call(Map args = [:]) {
         // copy setup file
         sh """
         mkdir -p '${targetBuildFolder}'
-        cp '${setupfile}' '${setupTargetFolder}/'
+        cp '${setupfile}' '${targetBuildFolder}/'
         """
-        echo "✅ setupCocos3 copied to ${setupTargetFolder}"
+        echo "✅ setupCocos3 copied to ${targetBuildFolder}"
     }
 
     if (!fileExists(unityXcodeProj)) {
