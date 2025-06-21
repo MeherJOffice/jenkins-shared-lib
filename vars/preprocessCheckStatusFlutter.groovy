@@ -67,7 +67,7 @@ def call(Map args) {
     // Run the Python script
     // 🛠️ Run Python date preprocessor
     sh """
-        source '${venvPath}/bin/activate' && \
-        sh "python3 '${bdatepythonScript}' '${newtsFilePath}' ${datetestingFlag}"
-    """
+    source '${venvPath}/bin/activate' && \
+    python3 '${bdatepythonScript}' '${newtsFilePath}' ${datetestingFlag}
+    """ 
 }
