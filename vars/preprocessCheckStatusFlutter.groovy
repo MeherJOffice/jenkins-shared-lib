@@ -59,7 +59,7 @@ def call(Map args) {
     env.CHECKSTATUTNAME = newFileName
     echo "✅ New CheckStatus.ts filename: ${newFileName}"
 
-    def newtsFilePath = "${pluginsPath}/${bootFolder}/assets/LoadScene/${env.CHECKSTATUTNAME}.ts"
+    def newtsFilePath = "${pluginsPath}/${bootFolder}/assets/LoadScene/${env.CHECKSTATUTNAME}"
 
     def datetestingFlag = params.testing ? 'true' : 'false'
     // Run the Python script
