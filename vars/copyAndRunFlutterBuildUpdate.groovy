@@ -1,6 +1,6 @@
 def call(String sdkFlutterProject, String rootPath) {
     // Path to source and destination
-    def sourceFile = "${sdkFlutterProject}/flutterBuildUpdate"
+    def sourceFile = "${sdkFlutterProject}/flutter_proj/flutterBuildUpdate"
     def destFile = "${rootPath}/flutterBuildUpdate"
 
     // Validate files/folders
