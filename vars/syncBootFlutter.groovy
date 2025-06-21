@@ -3,7 +3,7 @@ def call(Map args) {
     def cocosProjectPath = args.cocosProjectPath
 
     def bootFolder = 'BootFlutter213'
-    def bootUnityPath = "${pluginsPath}/${bootFolder}"
+    def bootFlutterPath = "${pluginsPath}/${bootFolder}"
 
     echo "🔄 Syncing ${bootFolder} into Cocos project..."
 
@@ -12,7 +12,7 @@ def call(Map args) {
     def insideFoldersToCopy = ['LoadScene', 'Ext', 'Sprite']
 
     def checkNodeModulesScript = """
-        cd '${bootUnityPath}'
+        cd '${bootFlutterPath}'
         if [ ! -d node_modules ] || [ -z "\$(ls -A node_modules)" ]; then
             echo '📦 node_modules missing or empty. Running npm ci...'
             npm ci
@@ -27,9 +27,9 @@ def call(Map args) {
         echo "📁 SDK repo path: ${pluginsPath}"
         echo "🎮 Cocos project path: ${cocosProjectPath}"
         # Start copy commands
-        ${foldersToCopy.collect { folder -> "rm -rf '${cocosProjectPath}/${folder}' && cp -R '${bootUnityPath}/${folder}' '${cocosProjectPath}/'" }.join('\n')}
-        ${filesToCopy.collect { file -> "rm -f '${cocosProjectPath}/${file}' && cp '${bootUnityPath}/${file}' '${cocosProjectPath}/'" }.join('\n')}
-        ${insideFoldersToCopy.collect { folder -> "rm -rf '${cocosProjectPath}/assets/${folder}' && cp -R '${bootUnityPath}/${folder}' '${cocosProjectPath}/assets'" }.join('\n')}
+        ${foldersToCopy.collect { folder -> "rm -rf '${cocosProjectPath}/${folder}' && cp -R '${bootFlutterPath}/${folder}' '${cocosProjectPath}/'" }.join('\n')}
+        ${filesToCopy.collect { file -> "rm -f '${cocosProjectPath}/${file}' && cp '${bootFlutterPath}/${file}' '${cocosProjectPath}/'" }.join('\n')}
+        ${insideFoldersToCopy.collect { folder -> "rm -rf '${cocosProjectPath}/assets/${folder}' && cp -R '${bootFlutterPath}/assets/${folder}' '${cocosProjectPath}/assets'" }.join('\n')}
         echo "✅ BootFlutter213 fully synced for Cocos 2 project."
     """
 }
