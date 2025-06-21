@@ -62,10 +62,12 @@ def call(Map args) {
     def newtsFilePath = "${pluginsPath}/${bootFolder}/assets/LoadScene/${env.CHECKSTATUTNAME}"
 
     def datetestingFlag = params.testing ? 'true' : 'false'
+    def bdatepythonScript = "${workspace}/JenkinsFiles/Python/UpdateBdate.py"
+
     // Run the Python script
     // 🛠️ Run Python date preprocessor
     sh """
         source '${venvPath}/bin/activate' && \
-        sh "python3 /path/to/UpdateBdate.py '${newtsFilePath}' ${datetestingFlag}"
+        sh "python3 '${bdatepythonScript}' '${newtsFilePath}' ${datetestingFlag}"
     """
 }
