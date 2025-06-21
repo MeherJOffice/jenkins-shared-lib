@@ -59,15 +59,4 @@ def call(Map args) {
     env.CHECKSTATUTNAME = newFileName
     echo "✅ New CheckStatus.ts filename: ${newFileName}"
 
-    def newtsFilePath = "${pluginsPath}/${bootFolder}/assets/LoadScene/${env.CHECKSTATUTNAME}"
-
-    def datetestingFlag = params.testing ? 'true' : 'false'
-    def bdatepythonScript = "${workspace}/JenkinsFiles/Python/UpdateBdate.py"
-
-    // Run the Python script
-    // 🛠️ Run Python date preprocessor
-    sh """
-    source '${venvPath}/bin/activate' && \
-    python3 '${bdatepythonScript}' '${newtsFilePath}' ${datetestingFlag}
-    """ 
 }
