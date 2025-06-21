@@ -3,14 +3,16 @@ def call(String rootPath) {
         script: """
             cd "${rootPath}"
             for d in */ ; do
-                # Only print if it is a directory
                 if [ -d "\$d" ]; then
                     echo "\${d%/}"
                 fi
             done
         """,
         returnStdout: true
-    ).trim().split('\n').findAll { it }
+    )
+    .trim()
+    .split('\n')
+    .findAll { it && !it.endsWith('@tmp') }
 
     if (rootFolders.size() != 2) {
         error "❌ Expected exactly 2 folders (Flutter and Cocos) under ${rootPath}, found: ${rootFolders}"
